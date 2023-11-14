@@ -30292,7 +30292,7 @@ function getIssue() {
     return __awaiter(this, void 0, void 0, function* () {
         const issues = yield (0, octokit_1.octokit)()
             .rest.issues.listForRepo(Object.assign(Object.assign({}, (0, repo_1.repo)()), { creator: "github-actions[bot]", labels: "wpvc" }))
-            .catch(function (e) {
+            .catch((e) => {
             throw new IssueListError_1.IssueListError(String(e));
         });
         return issues.data.length > 0 ? issues.data[0].number : null;
@@ -30303,7 +30303,7 @@ function commentOnIssue(issue, comment) {
     return __awaiter(this, void 0, void 0, function* () {
         yield (0, octokit_1.octokit)()
             .rest.issues.createComment(Object.assign(Object.assign({}, (0, repo_1.repo)()), { issue_number: issue, body: comment }))
-            .catch(function (e) {
+            .catch((e) => {
             throw new IssueCommentError_1.IssueCommentError(issue, String(e));
         });
     });
@@ -30313,7 +30313,7 @@ function closeIssue(issue) {
     return __awaiter(this, void 0, void 0, function* () {
         yield (0, octokit_1.octokit)()
             .rest.issues.update(Object.assign(Object.assign({}, (0, repo_1.repo)()), { issue_number: issue, state: "closed" }))
-            .catch(function (e) {
+            .catch((e) => {
             throw new IssueUpdateError_1.IssueUpdateError(issue, String(e));
         });
     });
@@ -30324,7 +30324,7 @@ function createIssue(title, body, assignees) {
         yield (0, octokit_1.octokit)()
             .rest.issues.create(Object.assign(Object.assign({}, (0, repo_1.repo)()), { title,
             body, labels: ["wpvc"], assignees }))
-            .catch(function (e) {
+            .catch((e) => {
             throw new IssueCreationError_1.IssueCreationError(String(e));
         });
     });
@@ -30334,7 +30334,7 @@ function updateIssue(issueNumber, title, body) {
     return __awaiter(this, void 0, void 0, function* () {
         const issue = yield (0, octokit_1.octokit)()
             .rest.issues.get(Object.assign(Object.assign({}, (0, repo_1.repo)()), { issue_number: issueNumber }))
-            .catch(function (e) {
+            .catch((e) => {
             throw new GetIssueError_1.GetIssueError(issueNumber, String(e));
         });
         if (issue.data.title === title && issue.data.body === body) {
@@ -30343,7 +30343,7 @@ function updateIssue(issueNumber, title, body) {
         yield (0, octokit_1.octokit)()
             .rest.issues.update(Object.assign(Object.assign({}, (0, repo_1.repo)()), { issue_number: issueNumber, title,
             body }))
-            .catch(function (e) {
+            .catch((e) => {
             throw new IssueUpdateError_1.IssueUpdateError(issueNumber, String(e));
         });
     });
@@ -30688,7 +30688,7 @@ function readme(config) {
         for (const readmeLocation of config.readme) {
             const result = yield (0, octokit_1.octokit)()
                 .rest.repos.getContent(Object.assign(Object.assign({}, (0, repo_1.repo)()), { path: readmeLocation }))
-                .catch(function (e) {
+                .catch((e) => {
                 if ((0, has_status_1.hasStatus)(e) && e.status === 404) {
                     return null;
                 }
@@ -30801,15 +30801,15 @@ const https = __importStar(__nccwpck_require__(5687));
 const LatestVersionError_1 = __nccwpck_require__(4241);
 function httpsRequest(options) {
     return __awaiter(this, void 0, void 0, function* () {
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
             https
-                .get(options, function (response) {
+                .get(options, (response) => {
                 let data = "";
                 response.setEncoding("utf8");
                 response.on("data", (chunk) => {
                     data += chunk;
                 });
-                response.on("end", function () {
+                response.on("end", () => {
                     if (response.statusCode === 200) {
                         resolve(data);
                     }
@@ -30840,7 +30840,7 @@ function wordpressVersions() {
         const rawData = yield httpsRequest({
             host: "api.wordpress.org",
             path: "/core/version-check/1.7/?channel=beta",
-        }).catch(function (e) {
+        }).catch((e) => {
             throw new LatestVersionError_1.LatestVersionError(e);
         });
         let response = {};
@@ -30937,7 +30937,7 @@ function WPVCConfig() {
     return __awaiter(this, void 0, void 0, function* () {
         const file = yield (0, octokit_1.octokit)()
             .rest.repos.getContent(Object.assign(Object.assign({}, (0, repo_1.repo)()), { path: ".wordpress-version-checker.json" }))
-            .catch(function (e) {
+            .catch((e) => {
             if ((0, has_status_1.hasStatus)(e) && e.status === 404) {
                 return null;
             }
